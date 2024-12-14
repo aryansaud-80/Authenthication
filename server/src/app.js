@@ -12,5 +12,14 @@ app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
 app.use(express.static('public'));
 app.use(cookieParser());
 
+// Routes
+
+import registerRouter from './routes/auth.routes.js';
+import userRouter from './routes/user.routes.js';
+
+app.use('/api/v1/auth', registerRouter);
+
+app.use("/api/v1/user", userRouter);
+
 
 export default app;
