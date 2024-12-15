@@ -193,7 +193,7 @@ const generateVerifyOtp = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, 'OTP generated successfully'));
+    .json(new ApiResponse(200, 'OTP generated successfully', {}));
 });
 
 const verifyEmail = asyncHandler(async (req, res) => {
@@ -268,18 +268,13 @@ const generateResetOtp = asyncHandler(async (req, res) => {
 });
 
 const resetPassword = asyncHandler(async (req, res) => {
-  const { otp, password } = req.body;
-  const userId = req.user?._id;
+  const {email, otp, newPassword } = req.body;
 
-  if (!userId) {
-    throw new ApiError(401, 'Unauthorized');
+  if (!otp || !newPassword || !email) {
+    throw new ApiError(400, 'OTP,password and email are required');
   }
 
-  if (!otp || !password) {
-    throw new ApiError(400, 'OTP and password are required');
-  }
-
-  const user = await User.findById(userId);
+  const user = await User.findOne({ email });
 
   if (!user) {
     throw new ApiError(404, 'User not found');
@@ -293,7 +288,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     throw new ApiError(400, 'OTP expired');
   }
 
-  user.password = password;
+  user.password = newPassword;
   user.resetOtp = '';
   user.resetOtpExpires = 0;
 

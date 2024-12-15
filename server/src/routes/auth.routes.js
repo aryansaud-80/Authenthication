@@ -20,7 +20,7 @@ router.route('/generate-verify-otp').post(jwtVerifyToken, generateVerifyOtp);
 
 router.route('/verify-email').post(jwtVerifyToken, verifyEmail);
 router.route('/generate-reset-otp').post(generateResetOtp);
-router.route('/reset-password').post(jwtVerifyToken,resetPassword);
+router.route('/reset-password').post(resetPassword);
 router.route('/is-authenticated').get(jwtVerifyToken, isUserAuthenticated);
 
 export default router;
